@@ -13,7 +13,7 @@ public class ExampleBot extends DefaultBWListener {
     public void onFrame() {
         Player self = game.self();
         game.drawTextScreen(100, 100, "Bot has " + self.minerals() + " minerals");
-        game.drawTextScreen(100, 120, "Bot has " + self.allUnitCount() + " units");
+        game.drawTextScreen(100, 110, "Bot has " + self.allUnitCount() + " units");
 
         // Train units while we can
         for (Unit trainer : self.getUnits()) {
@@ -31,7 +31,8 @@ public class ExampleBot extends DefaultBWListener {
         }
     }
 
-    public void onUnitComplete(Unit unit) {
+    // helper function for gathering minerals, checking for worker unit type
+    public void workerMine(Unit unit) {
         if (unit.getType().isWorker()) {
             Unit closestMineral = null;
             int closestDistance = Integer.MAX_VALUE;
@@ -45,6 +46,10 @@ public class ExampleBot extends DefaultBWListener {
             // Gather the closest mineral
             unit.gather(closestMineral);
         }
+    }
+
+    public void onUnitComplete(Unit unit) {
+        workerMine(unit);
     }
 
     void run() {
